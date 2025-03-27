@@ -9,16 +9,14 @@ Planet::Planet() {
     _name = "Unknown";
     _distanceFromEarth = 0.0;
     _discoveryDate = 0;
-    _planetType = 0;
     _planetaryMass = 0.0;
 }
 
-Planet::Planet(string& name, float distance, float mass, int discovery, int type) {
+Planet::Planet(string name, float distance, float mass, int discovery) {
     _name = name;
     _distanceFromEarth = distance;
     _planetaryMass = mass;
     _discoveryDate = discovery;
-    _planetType = type;
 }
 
 // Getters
@@ -48,23 +46,23 @@ float Planet::getFavorability() const {
 
 // TODO: will need to implement these functions depending on the dataset
 
-// Print debug statements
-void Planet::printPlanetInfo() const {
-    return;
-}
-
-void Planet::printHabitability(const float &favorability) const {
-    return;
-}
-
-// Arithmetic functions
-float Planet::calculateFavorability() {
-    return 0;
-}
-
-string Planet::habitabilityTier(const float &favorability) const {
-    return "0";
-}
+//// Print debug statements
+//void Planet::printPlanetInfo() const {
+//    return;
+//}
+//
+//void Planet::printHabitability(const float &favorability) const {
+//    return;
+//}
+//
+//// Arithmetic functions
+//float Planet::calculateFavorability() {
+//    return 0;
+//}
+//
+//string Planet::habitabilityTier(const float &favorability) const {
+//    return "0";
+//}
 
 
 

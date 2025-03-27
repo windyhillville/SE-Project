@@ -1,12 +1,15 @@
 #include <iostream>
 #include "Planet.h"
+#include "DataProcessing.h"
 #include <vector>
 using namespace std;
 
 int main () {
 
     vector<Planet*> planets;
-    // TODO: Need to make a function to read in all the planetary data
+    // placeholder csv file until we get the entire dataset
+    inputParser(planets, "testplanets.csv");
+    // call to create the user interface will go here
 
     return 0;
 }

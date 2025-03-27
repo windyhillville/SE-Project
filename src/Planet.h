@@ -17,7 +17,7 @@ class Planet {
 public:
     // TODO: will need to update these functions depending on the dataset
     Planet();
-    Planet(string& name, float distance, float mass, int discovery, int type);
+    Planet(string name, float distance, float mass, int discovery);
 
     void printPlanetInfo() const;
     void printHabitability(const float& favorability) const;
