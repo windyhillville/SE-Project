@@ -25,16 +25,28 @@ void inputParser(vector<Planet*>& planets, const string& filename) {
                 string name;
                 getline(stream, name, ',');
 
-                string distance;
-                getline(stream, distance, ',');
+                string orbit;
+                getline(stream, orbit, ',');
+
+                string radius;
+                getline(stream, radius, ',');
 
                 string mass;
                 getline(stream, mass, ',');
 
-                string date;
-                getline(stream, date, ',');
+                string equilTemp;
+                getline(stream, equilTemp, ',');
 
-                Planet *planet = new Planet(name, stof(distance), stof(mass), stoi(date));
+                string starTemp;
+                getline(stream, starTemp, ',');
+
+                string starRadius;
+                getline(stream, starRadius, ',');
+
+                string distance;
+                getline(stream, distance, ',');
+
+                Planet *planet = new Planet(name, stof(distance), stof(mass), stof(radius), stof(orbit), stof(equilTemp), stof(starTemp), stof(starRadius));
                 planets.push_back(planet);
             }
         }

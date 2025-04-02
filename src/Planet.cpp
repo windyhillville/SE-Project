@@ -8,15 +8,25 @@ Planet::Planet() {
     // front end will have to put "?" if they are 0
     _name = "Unknown";
     _distanceFromEarth = 0.0;
-    _discoveryDate = 0;
     _planetaryMass = 0.0;
+    _planetaryRadius = 0.0;
+    _planetaryOrbit = 0.0;
+    _planetaryEquilTemp = 0.0; // If it exists, if it does not, will need to calculate
+
+    _starTemp = 0.0;
+    _starRadius = 0.0;
 }
 
-Planet::Planet(string name, float distance, float mass, int discovery) {
+Planet::Planet(string name, float distance, float mass, float radius, float orbit, float equilTemp, float starTemp, float starRadius) {
     _name = name;
     _distanceFromEarth = distance;
     _planetaryMass = mass;
-    _discoveryDate = discovery;
+    _planetaryRadius = radius;
+    _planetaryOrbit = orbit;
+    _planetaryEquilTemp = equilTemp;
+
+    _starTemp = starTemp;
+    _starRadius = starRadius;
 }
 
 // Getters
@@ -32,8 +42,24 @@ float Planet::getMass() const {
     return _planetaryMass;
 }
 
-float Planet::getDiscoveryDate() const {
-    return _discoveryDate;
+float Planet::getRadius() const {
+    return _planetaryRadius;
+}
+
+float Planet::getOrbitalDistance() const {
+    return _planetaryOrbit;
+}
+
+float Planet::getEquilibriumTemp() const {
+    return _planetaryEquilTemp;
+}
+
+float Planet::getStarTemp() {
+    return _starTemp;
+}
+
+float Planet::getStarRadius() {
+    return _starRadius;
 }
 
 float Planet::getType() const {
@@ -43,6 +69,8 @@ float Planet::getType() const {
 float Planet::getFavorability() const {
     return _favorability;
 }
+
+
 
 // TODO: will need to implement these functions depending on the dataset
 
