@@ -4,29 +4,36 @@
 using namespace std;
 
 class Planet {
+    // Input Planetary Data
     string _name;
     float _distanceFromEarth;
     float _planetaryMass;
     float _planetaryRadius;
     float _planetaryOrbit;
     float _planetaryEquilTemp;
+
+    // Calculated Data
     int _planetType;
-    float _favorability;
+    float _habitability;
+    float _planetaryGravity;
+    float _planetaryScaleHeight;
 
     // Host Star
     float _starTemp;
     float _starRadius;
 
-    float calculateFavorability();
-    string habitabilityTier(const float& favorability) const;
+    // Calculation functions
+    int calculatePlanetType();
+    void calculatePlanetConditions();
 public:
-    // TODO: will need to update these functions depending on the dataset
+    // Constructors
     Planet();
     Planet(string name, float distance, float mass, float radius, float orbit, float equilTemp, float starTemp, float starRadius);
 
+    // Print debug
     void printPlanetInfo() const;
-    void printHabitability(const float& favorability) const;
 
+    // Input Planetary Data
     string getName() const;
     float getDistance() const;
     float getMass() const;
@@ -36,8 +43,10 @@ public:
     float getStarTemp();
     float getStarRadius();
 
-    float getFavorability() const;
-    float getType() const;
-
+    // Calculated Data
+    float getHabitability() const;
+    string getType() const;
+    float getGravity() const;
+    float getScaleHeight() const;
 
 };
