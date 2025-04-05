@@ -72,7 +72,7 @@ TEST_CASE("Binary Search Distance", "[positive]"){
     inputParser(planets, "testplanets.csv");
     Sort(planets, "distance");
 
-    int planetIndex = binarySearch(planets, 183.96);
+    int planetIndex = binarySearch(planets, "distance", 183.96);
     REQUIRE(planets[planetIndex]->getDistance() == Approx(183.96).margin(0.001));
 }
 
@@ -81,5 +81,23 @@ TEST_CASE("Binary Search Distance Exception", "[negative]"){
     inputParser(planets, "testplanets.csv");
     Sort(planets, "distance");
 
-    REQUIRE_THROWS_AS(binarySearch(planets, -50), invalid_argument);
+    REQUIRE_THROWS_AS(binarySearch(planets, "distance", -50), invalid_argument);
+}
+
+TEST_CASE("Search Nearest Distance", "[positive]"){
+    vector<Planet*> planets;
+    inputParser(planets, "testplanets.csv");
+    Sort(planets, "distance");
+
+    vector<Planet*> planets2 = searchNearest(planets, "distance", "183.96");
+    REQUIRE(planets == planets2);
+}
+
+TEST_CASE("Search Nearest Name", "[positive]"){
+    vector<Planet*> planets;
+    inputParser(planets, "ExoPlanets.csv");
+    Sort(planets, "alphabetical");
+
+    vector<Planet*> planets2 = searchNearest(planets, "alphabetical", "Kepler");
+    REQUIRE(planets2.size() == 10);
 }
