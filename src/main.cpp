@@ -35,19 +35,26 @@ int main () {
     // test
     CROW_ROUTE(app, "/test").methods("POST"_method)
         ([](const crow::request& req) {
+
+            // Retrieves body of HTTP request sent from Processing
             auto body = crow::json::load(req.body);
 
+            // Checks if there IS a body
             if (!body) {
                 crow::json::wvalue error;
                 error["result"] = "Invalid JSON!";
                 return crow::response(400, error);
             }
 
+            // Retrieves a string of a keys corresponding value
             string input = body["input"].s();
             string result = "Processed: " + input;
 
+            // Creates JSON Object and stores "result" into it
             crow::json::wvalue response;
             response["result"] = result;
+
+            // Sends processed request back to Processing
             return crow::response(response);
         });
 
@@ -56,6 +63,7 @@ int main () {
         ([&planets, &gen](const crow::request& req) {
             Planet* p = GetRandomPlanet(planets, gen);
 
+            // Creates a writable JSON Object
             crow::json::wvalue planet;
             planet["name"] = p->getName();
             planet["mass"] = p->getMass();
@@ -65,6 +73,7 @@ int main () {
             planet["starTemp"] = p->getStarTemp();
             planet["habitability"] = p->getHabitability();
 
+            // Sends processed request back to Processing
             return crow::response(planet);
         });
 
