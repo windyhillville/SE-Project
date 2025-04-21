@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
+#include <functional>
 #include <algorithm>
 #include <set>
 using namespace std;
@@ -366,4 +367,188 @@ vector<Planet*> searchNearest(vector<Planet*>& planets, const string& searchBy, 
 Planet* GetRandomPlanet(const vector<Planet*>& planets, mt19937& gen) {
     uniform_int_distribution<> dist(0, planets.size());
     return planets.at(dist(gen));
+}
+
+void loadUsers (vector<User*>& users, const string& filename){
+    // loads all existing user accounts from file
+    string filepath = "../users/";
+    filepath += filename;
+    ifstream file(filepath);
+
+    if (file.is_open()) {
+        string line;
+        while (getline(file, line)) {
+            istringstream stream(line);
+
+            string user;
+            getline(stream, user, ':');
+
+            string pass;
+            getline(stream, pass, ':');
+
+            User* User_ = new User(user, pass);
+            users.push_back(User_);
+        }
+    }
+    else {
+        throw invalid_argument("Could not open file: " + filename + ".");
+    }
+}
+
+string saveUser(vector<User*>& users, const string &filename, const string& username, const string& password){
+    // creates a new user account
+    string filepath = "../users/";
+    filepath += filename;
+    ofstream file(filepath, ios::app);
+
+    // checks if there are duplicate accounts with exact same username
+
+    for(User* user : users){
+        if(user->getUsername() == username){
+            return "duplicate_username";
+        }
+    }
+
+    // password requirements
+    // needs at least 5 characters, 1 special character defined as !@#$%^&*"
+
+    if(password.length() < 5){
+        return "invalid_length";
+    }
+    if(password.find_first_of("!@#$%^&*") == string::npos){
+        return "no_special_character";
+    }
+
+    // writes account to file
+    User* User_ = new User(username, hashPassword(password));
+    users.push_back(User_);
+    file << username << ":" << hashPassword(password) << ":";
+    return "account_created";
+}
+
+string hashPassword(const string& password){
+    // hashes password as a security measure
+    return to_string(hash<string>{}(password));
+}
+
+string loginUser(vector<User*>& users, const string& username, const string& password) {
+    // logins user if account exists in file
+
+    for (User *user: users) {
+        if (user->getUsername() == username && user->getPassword() == hashPassword(password)) {
+            user->loggedIn = true;
+            return "valid_login";
+        } else {
+            return "invalid_pass";
+        }
+    }
+
+    return "invalid_user";
+}
+
+string favoritePlanet(const string& username, const string& planetName){
+    // favorites the planet based on input from user
+    ofstream file("../users/favorites/" + username + ".txt", std::ios::app);
+
+    if(!file.is_open()){
+        throw runtime_error("Could not open file.");
+    }
+
+    file << planetName << "\n";
+    file.close();
+
+    return "valid_favorite";
+}
+
+string unfavoritePlanet(vector<User*> users, const string& username, const string& planetName){
+
+    // Removes favorite from user object's vector
+    for (User* user : users) {
+        for (int i = 0; i < user->favorites.size(); i++) {
+            if (user->favorites[i]->getName() == planetName) {
+                user->favorites.erase(user->favorites.begin() + i);
+                i--;
+            }
+        }
+    }
+
+    // Removes favorite from file
+    ifstream file("../users/favorites/" + username + ".txt", std::ios::app);
+
+    if(!file.is_open()){
+        throw runtime_error("Could not open file.");
+    }
+
+    vector<string> lines;
+    string line;
+
+    while(getline(file, line)){
+        if(line != planetName){
+            lines.push_back(line);
+        }
+    }
+    file.close();
+
+    ofstream write_file("../users/favorites/" + username + ".txt", std::ios::trunc);
+
+    if(!write_file.is_open()){
+        throw runtime_error("Could not open file.");
+    }
+
+    for(const auto& line : lines){
+        write_file << line << "\n";
+    }
+    write_file.close();
+
+    return "successful_unfavorite";
+}
+
+string loadFavorites(vector<User*>& users, vector<Planet*>& planets, const string& username){
+    // loads all favorites from the user's dedicated file
+    ifstream file("../users/favorites/" + username + ".txt");
+    vector<string> favorites;
+
+    if(!file.is_open()){
+        return "no_favorites";
+    }
+
+    string line;
+    while(getline(file, line)){
+        favorites.push_back(line);
+    }
+
+    findFavorites(users, planets, favorites);
+
+    return "favorites_loaded";
+}
+
+void findFavorites(vector<User*>& users, vector<Planet*>& planets, vector<string>& favorites){
+    // finds the favorites based on name from the user's file
+    Sort(planets, "alphabetical");
+    for (const string& favName : favorites) {
+        if (!users.empty()) {
+            int index = binarySearch(planets, "alphabetical", favName);
+            users[0]->favorites.push_back(planets[index]);
+        }
+    }
+}
+
+void clearFile(){
+    // for testing purposes
+    ofstream file("../users/accounts.txt", std::ios::trunc);
+    if(!file.is_open()){
+        throw runtime_error("Could not open file.");
+    }
+
+    file.close();
+}
+
+void clearFavFile(){
+    // for testing purposes
+    ofstream file("../users/favorites/test_account.txt", std::ios::trunc);
+    if(!file.is_open()){
+        throw runtime_error("Could not open file.");
+    }
+
+    file.close();
 }
