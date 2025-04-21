@@ -362,3 +362,8 @@ vector<Planet*> searchNearest(vector<Planet*>& planets, const string& searchBy, 
     }
     return nearest;
 }
+
+Planet* GetRandomPlanet(const vector<Planet*>& planets, mt19937& gen) {
+    uniform_int_distribution<> dist(0, planets.size());
+    return planets.at(dist(gen));
+}
