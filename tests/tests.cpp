@@ -101,3 +101,74 @@ TEST_CASE("Search Nearest Name", "[positive]"){
     vector<Planet*> planets2 = searchNearest(planets, "alphabetical", "Kepler");
     REQUIRE(planets2.size() == 10);
 }
+
+TEST_CASE("Creating Account and Login", "[positive]"){
+    vector<User*> users;
+
+    REQUIRE((saveUser(users, "accounts.txt", "test_account", "testing!23") == "account_created"));
+    REQUIRE((loginUser(users, "test_account", "testing!23") == "valid_login"));
+    clearFile();
+}
+
+TEST_CASE("Login Without Creating Account", "[negative]"){
+    vector<User*> users;
+    REQUIRE(loginUser(users,"test_account", "testing") == "invalid_user");
+}
+
+TEST_CASE("Creating Account with invalid length", "[negative]"){
+    vector<User*> users;
+    REQUIRE(saveUser(users,"accounts.txt","test_account", "A") == "invalid_length");
+}
+
+TEST_CASE("Creating Account with no special characters", "[negative]"){
+    vector<User*> users;
+    REQUIRE(saveUser(users,"accounts.txt","test_account", "testing123") == "no_special_character");
+}
+
+TEST_CASE("Creating Duplicate Account", "[negative]"){
+    vector<User*> users;
+    saveUser(users,"accounts.txt", "test_account", "testing!23");
+    REQUIRE(saveUser(users,"accounts.txt","test_account", "testing!23") == "duplicate_username");
+    clearFile();
+}
+
+TEST_CASE("Favoriting Planet", "[postive]"){
+    vector<Planet*> planets;
+    inputParser(planets, "TestPlanets.csv");
+    vector<User*> users;
+    saveUser(users,"accounts.txt", "test_account", "testing!23");
+
+    favoritePlanet("test_account", "Kepler-22b");
+    loadFavorites(users, planets, "test_account");
+
+    REQUIRE(users[0]->favorites[0]->getName() == "Kepler-22b");
+    clearFavFile();
+    clearFile();
+}
+
+TEST_CASE("Unfavoriting Planet", "[negative]"){
+    vector<Planet*> planets;
+    inputParser(planets, "TestPlanets.csv");
+    vector<User*> users;
+    saveUser(users,"accounts.txt", "test_account", "testing!23");
+
+    favoritePlanet("test_account", "Kepler-22b");
+    loadFavorites(users, planets, "test_account");
+
+    unfavoritePlanet(users, "test_account", "Kepler-22b");
+
+    bool foundPlanet = false;
+    for (User* user : users) {
+        if (user->getUsername() == "test_account") {
+            for (Planet* p : user->favorites) {
+                if (p && p->getName() == "Kepler-22b") {
+                    foundPlanet = true;
+                }
+            }
+        }
+    }
+
+    REQUIRE(foundPlanet == false);
+    clearFavFile();
+    clearFile();
+}

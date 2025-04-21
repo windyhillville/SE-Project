@@ -15,6 +15,9 @@ int main () {
 
     // vector to hold all exoplanets
     vector<Planet*> planets;
+    vector<User*> users;
+    // loads all users from file
+    loadUsers(users, "account.txt");
     // placeholder csv file until we get the entire dataset
     inputParser(planets, "ExoPlanets.csv");
     // call to create the user interface will go here
