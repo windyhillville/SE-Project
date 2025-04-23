@@ -497,6 +497,23 @@ string favoritePlanet(User*& currentUser, const vector<Planet*>& planets, const 
 }
 
 string unfavoritePlanet(vector<User*> users, const string& username, const string& planetName){
+    // Checks to see if planet is actually in the favorites file
+    string name;
+    ifstream inFile("../users/favorites/" + username + ".txt");
+
+    bool foundPlanet = false;
+    while (getline(inFile, name)) {
+        if (name == planetName){
+            foundPlanet = true;
+            break;
+        }
+    }
+    if(!foundPlanet){
+        return "Planet is not in favorites list!";
+    }
+
+    inFile.clear();
+    inFile.seekg(0);
 
     // Removes favorite from user object's vector
     for (User* user : users) {
