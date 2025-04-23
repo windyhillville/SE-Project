@@ -213,6 +213,29 @@ int main () {
                 return crow::response(favoritesJSON);
             });
 
+    CROW_ROUTE(app, "/mainMenu/updateFavorites").methods("POST"_method)
+            ([&users, &currentUser, &planets](const crow::request& req) {
+                crow::json::wvalue result;
+                crow::json::wvalue favoritesJSON = crow::json::wvalue::list();
+
+                int index = 0;
+                for (Planet* favPlanet : currentUser->favorites) {
+                    crow::json::wvalue planetJSON;
+                    planetJSON["name"] = favPlanet->getName();
+                    planetJSON["mass"] = favPlanet->getMass();
+                    planetJSON["distanceFromEarth"] = favPlanet->getDistance();
+                    planetJSON["type"] = favPlanet->getType();
+                    planetJSON["radius"] = favPlanet->getRadius();
+                    planetJSON["starTemp"] = favPlanet->getStarTemp();
+                    planetJSON["habitability"] = favPlanet->getHabitability();
+                    planetJSON["gravity"] = favPlanet->getGravity();
+
+                    favoritesJSON[index++] = std::move(planetJSON);
+                }
+
+                return crow::response(favoritesJSON);
+            });
+
     // Listens for any HTTP request from a client (Processing)
     app.port(5001).multithreaded().run();
     return 0;

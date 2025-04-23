@@ -504,7 +504,7 @@ string unfavoritePlanet(vector<User*> users, const string& username, const strin
     }
 
     // Removes favorite from file
-    ifstream file("../users/favorites/" + username + ".txt", std::ios::app);
+    ifstream file("../users/favorites/" + username + ".txt");
 
     if(!file.is_open()){
         throw runtime_error("Could not open file.");
