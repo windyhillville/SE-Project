@@ -28,10 +28,10 @@ int main () {
     vector<Planet*> planets;
     vector<User*> users;
     // loads all users from file
-    loadUsers(users, "accounts.txt");
-    // placeholder csv file until we get the entire dataset
-    inputParser(planets, "ExoPlanets.csv");
-    // call to create the user interface will go here
+//    loadUsers(users, "accounts.txt");
+//    // placeholder csv file until we get the entire dataset
+//    inputParser(planets, "ExoPlanets.csv");
+//    // call to create the user interface will go here
 
     string currentUsername = "";
     User* currentUser = nullptr;
@@ -186,6 +186,7 @@ int main () {
 
     CROW_ROUTE(app, "/mainMenu/loadFavorites").methods("POST"_method)
             ([&users, &currentUser, &planets](const crow::request& req) {
+
                 crow::json::wvalue result;
                 crow::json::wvalue favoritesJSON = crow::json::wvalue::list();
 
@@ -234,6 +235,19 @@ int main () {
                 }
 
                 return crow::response(favoritesJSON);
+            });
+
+    CROW_ROUTE(app, "/shutDown").methods("POST"_method)
+            ([&currentUser, &users, &planets]() {
+                currentUser->favorites.clear();
+//                for (auto & user : users) {
+//                    delete user;
+//                }
+//                for (auto & planet : planets) {
+//                    delete planet;
+//                }
+
+                return crow::response(200, "server shutting down...");
             });
 
     // Listens for any HTTP request from a client (Processing)
