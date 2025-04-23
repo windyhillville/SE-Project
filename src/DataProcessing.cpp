@@ -10,48 +10,48 @@ using namespace std;
 // function implementations will be placed here
 
 void inputParser(vector<Planet*>& planets, const string& filename) {
-        string filepath = "../";
-        filepath += filename;
-        ifstream file(filepath);
+    string filepath = "../data/";
+    filepath += filename;
+    ifstream file(filepath);
 
-        string firstLine;
-        getline(file, firstLine);
+    string firstLine;
+    getline(file, firstLine);
 
-        if (file.is_open()) {
+    if (file.is_open()) {
 //            cout << "File is open." << endl << endl;
 
-            string line;
-            while (getline(file, line)) {
-                istringstream stream(line);
+        string line;
+        while (getline(file, line)) {
+            istringstream stream(line);
 
-                string name;
-                getline(stream, name, ',');
+            string name;
+            getline(stream, name, ',');
 
-                string orbit;
-                getline(stream, orbit, ',');
+            string orbit;
+            getline(stream, orbit, ',');
 
-                string radius;
-                getline(stream, radius, ',');
+            string radius;
+            getline(stream, radius, ',');
 
-                string mass;
-                getline(stream, mass, ',');
+            string mass;
+            getline(stream, mass, ',');
 
-                string equilTemp;
-                getline(stream, equilTemp, ',');
+            string equilTemp;
+            getline(stream, equilTemp, ',');
 
-                string starTemp;
-                getline(stream, starTemp, ',');
+            string starTemp;
+            getline(stream, starTemp, ',');
 
-                string starRadius;
-                getline(stream, starRadius, ',');
+            string starRadius;
+            getline(stream, starRadius, ',');
 
-                string distance;
-                getline(stream, distance, ',');
+            string distance;
+            getline(stream, distance, ',');
 
-                Planet *planet = new Planet(name, stof(distance), stof(mass), stof(radius), stof(orbit), stof(equilTemp), stof(starTemp), stof(starRadius));
-                planets.push_back(planet);
-            }
+            Planet *planet = new Planet(name, stof(distance), stof(mass), stof(radius), stof(orbit), stof(equilTemp), stof(starTemp), stof(starRadius));
+            planets.push_back(planet);
         }
+    }
     else {
         throw invalid_argument("Could not open file: " + filename + ".");
     }
@@ -64,37 +64,37 @@ void Sort(vector<Planet*>& planets, const string& sortBy){
             return planet1->getName() < planet2->getName();
         });
     }
-    // Distance descending
+        // Distance descending
     else if (sortBy == "distance") {
         sort(planets.begin(), planets.end(), [](Planet *planet1, Planet *planet2) {
             return planet1->getDistance() > planet2->getDistance();
         });
     }
-    // Mass descending
+        // Mass descending
     else if (sortBy == "mass"){
         sort(planets.begin(), planets.end(), [](Planet *planet1, Planet *planet2) {
             return planet1->getMass() > planet2->getMass();
         });
     }
-    // Radius descending
+        // Radius descending
     else if (sortBy == "radius"){
         sort(planets.begin(), planets.end(), [](Planet *planet1, Planet *planet2) {
             return planet1->getRadius() > planet2->getRadius();
         });
     }
-    // Habitability
+        // Habitability
     else if (sortBy == "habitability"){
         sort(planets.begin(), planets.end(), [](Planet *planet1, Planet *planet2) {
             return planet1->getHabitability() > planet2->getHabitability();
         });
     }
-    // Type
+        // Type
     else if (sortBy == "type"){
         sort(planets.begin(), planets.end(), [](Planet *planet1, Planet *planet2) {
             return planet1->getType() > planet2->getType();
         });
     }
-    // Gravity
+        // Gravity
     else if (sortBy == "gravity"){
         sort(planets.begin(), planets.end(), [](Planet *planet1, Planet *planet2) {
             return planet1->getGravity() > planet2->getGravity();
@@ -414,6 +414,9 @@ string saveUser(vector<User*>& users, const string &filename, const string& user
     if (username.length() < 5) {
         return "Username must be 5 or more characters!";
     }
+    if (username.find_first_of(' ') != string::npos){
+        return "Username must have no spaces!";
+    }
 
     // password requirements
     // needs at least 5 characters, 1 special character defined as !@#$%^&*"
@@ -422,6 +425,9 @@ string saveUser(vector<User*>& users, const string &filename, const string& user
     }
     if(password.find_first_of("!@#$%^&*") == string::npos){
         return "Password needs at least one special character!";
+    }
+    if (password.find_first_of(' ') != string::npos){
+        return "Password must have no spaces!";
     }
 
     // writes account to file
@@ -570,17 +576,6 @@ void findFavorites(User*& currentUser, vector<Planet*>& planets, vector<string>&
         }
     }
 }
-
-//void findFavorites(vector<User*>& users, vector<Planet*>& planets, vector<string>& favorites){
-//    // finds the favorites based on name from the user's file
-//    Sort(planets, "alphabetical");
-//    for (const string& favName : favorites) {
-//        if (!users.empty()) {
-//            int index = binarySearch(planets, "alphabetical", favName);
-//            users[0]->favorites.push_back(planets[index]);
-//        }
-//    }
-//}
 
 void clearFile(){
     // for testing purposes

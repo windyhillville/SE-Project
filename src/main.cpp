@@ -38,59 +38,59 @@ int main () {
 
     // test
     CROW_ROUTE(app, "/test").methods("POST"_method)
-        ([](const crow::request& req) {
+            ([](const crow::request& req) {
 
-            // Retrieves body of HTTP request sent from Processing
-            auto body = crow::json::load(req.body);
+                // Retrieves body of HTTP request sent from Processing
+                auto body = crow::json::load(req.body);
 
-            // Checks if there IS a body
-            if (!body) {
-                crow::json::wvalue error;
-                error["result"] = "Invalid JSON!";
-                return crow::response(400, error);
-            }
+                // Checks if there IS a body
+                if (!body) {
+                    crow::json::wvalue error;
+                    error["result"] = "Invalid JSON!";
+                    return crow::response(400, error);
+                }
 
-            // Retrieves a string of a keys corresponding value
-            string input = body["input"].s();
-            string result = "Processed: " + input;
+                // Retrieves a string of a keys corresponding value
+                string input = body["input"].s();
+                string result = "Processed: " + input;
 
-            // Creates JSON Object and stores "result" into it
-            crow::json::wvalue response;
-            response["result"] = result;
+                // Creates JSON Object and stores "result" into it
+                crow::json::wvalue response;
+                response["result"] = result;
 
-            // Sends processed request back to Processing
-            return crow::response(response);
-        });
+                // Sends processed request back to Processing
+                return crow::response(response);
+            });
 
     CROW_ROUTE(app, "/loginScreen/signIn").methods("POST"_method)
-        ([&users, &currentUser](const crow::request& req) {
+            ([&users, &currentUser](const crow::request& req) {
 
-            auto body = crow::json::load(req.body);
+                auto body = crow::json::load(req.body);
 
-            // Checks if there IS a body
-            if (!body) {
-                crow::json::wvalue error;
-                error["result"] = "Invalid JSON!";
-                return crow::response(400, error);
-            }
-
-            string currentUsername = body["username"].s();
-            string password = body["password"].s();
-
-            crow::json::wvalue result;
-            result["truthValue"] = loginUser(users, currentUsername, password);
-
-            crow::json::rvalue view = crow::json::load(result.dump());
-            if (view["truthValue"].b()) {
-                for (User* user : users) {
-                    if (currentUsername == user->getUsername())
-                        currentUser = user;
+                // Checks if there IS a body
+                if (!body) {
+                    crow::json::wvalue error;
+                    error["result"] = "Invalid JSON!";
+                    return crow::response(400, error);
                 }
-            }
+
+                string currentUsername = body["username"].s();
+                string password = body["password"].s();
+
+                crow::json::wvalue result;
+                result["truthValue"] = loginUser(users, currentUsername, password);
+
+                crow::json::rvalue view = crow::json::load(result.dump());
+                if (view["truthValue"].b()) {
+                    for (User* user : users) {
+                        if (currentUsername == user->getUsername())
+                            currentUser = user;
+                    }
+                }
 //            string userInformation = "User Data stored:\nUsername: " + username + "\nPassword: " + password + "\n";
 
-            return crow::response(result);
-        });
+                return crow::response(result);
+            });
 
     CROW_ROUTE(app, "/loginScreen/createAccount").methods("POST"_method)
             ([&users](const crow::request& req) {
@@ -151,10 +151,10 @@ int main () {
 
                 // Add favorite planet
                 for (User* user : users) {
-                     if (currentUser->getUsername() == user->getUsername()) {
-                         result["result"] = favoritePlanet(currentUser, planets, currentUser->getUsername(), planetName);
-                         break;
-                     }
+                    if (currentUser->getUsername() == user->getUsername()) {
+                        result["result"] = favoritePlanet(currentUser, planets, currentUser->getUsername(), planetName);
+                        break;
+                    }
                 }
                 return crow::response(result);
             });

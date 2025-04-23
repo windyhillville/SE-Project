@@ -40,7 +40,6 @@ bool loginUser(vector<User*>& users, const string& username, const string& passw
 string favoritePlanet(User*& currentUser, const vector<Planet*>& planets, const string& username, const string& planetName);
 string unfavoritePlanet(vector<User*> users, const string& username, const string& planetName);
 string loadFavorites(vector<User*>& users, vector<Planet*>& planets,const string& username);
-void findFavorites(vector<User*>& users, vector<Planet*>& planets, vector<string>& favorites);
 void findFavorites(User*& currentUser, vector<Planet*>& planets, vector<string>& favorites);
 
 // utility
