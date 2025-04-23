@@ -34,13 +34,14 @@ Planet* GetRandomPlanet(const vector<Planet*>& planets, mt19937& gen);
 void loadUsers (vector<User*>& users, const string& filename);
 string saveUser(vector<User*>& users, const string &filename, const string& username, const string& password);
 string hashPassword(const string& password);
-string loginUser(vector<User*>& users, const string& username, const string& password);
+bool loginUser(vector<User*>& users, const string& username, const string& password);
 
 // favorite functions
-string favoritePlanet(const string& username, const string& planetName);
+string favoritePlanet(User*& currentUser, const vector<Planet*>& planets, const string& username, const string& planetName);
 string unfavoritePlanet(vector<User*> users, const string& username, const string& planetName);
 string loadFavorites(vector<User*>& users, vector<Planet*>& planets,const string& username);
 void findFavorites(vector<User*>& users, vector<Planet*>& planets, vector<string>& favorites);
+void findFavorites(User*& currentUser, vector<Planet*>& planets, vector<string>& favorites);
 
 // utility
 void clearFile();

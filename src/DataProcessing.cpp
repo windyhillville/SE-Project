@@ -365,7 +365,7 @@ vector<Planet*> searchNearest(vector<Planet*>& planets, const string& searchBy, 
 }
 
 Planet* GetRandomPlanet(const vector<Planet*>& planets, mt19937& gen) {
-    uniform_int_distribution<> dist(0, planets.size());
+    uniform_int_distribution<> dist(0, planets.size()-1);
     return planets.at(dist(gen));
 }
 
@@ -405,25 +405,30 @@ string saveUser(vector<User*>& users, const string &filename, const string& user
 
     for(User* user : users){
         if(user->getUsername() == username){
-            return "duplicate_username";
+            return "Username already exists!";
         }
+    }
+
+    // username requirements
+    // needs at least 5 characters
+    if (username.length() < 5) {
+        return "Username must be 5 or more characters!";
     }
 
     // password requirements
     // needs at least 5 characters, 1 special character defined as !@#$%^&*"
-
     if(password.length() < 5){
-        return "invalid_length";
+        return "Password must be 5 or more characters!";
     }
     if(password.find_first_of("!@#$%^&*") == string::npos){
-        return "no_special_character";
+        return "Password needs at least one special character!";
     }
 
     // writes account to file
     User* User_ = new User(username, hashPassword(password));
     users.push_back(User_);
     file << username << ":" << hashPassword(password) << ":";
-    return "account_created";
+    return "Account successfully created!";
 }
 
 string hashPassword(const string& password){
@@ -431,22 +436,37 @@ string hashPassword(const string& password){
     return to_string(hash<string>{}(password));
 }
 
-string loginUser(vector<User*>& users, const string& username, const string& password) {
+bool loginUser(vector<User*>& users, const string& username, const string& password) {
     // logins user if account exists in file
 
     for (User *user: users) {
         if (user->getUsername() == username && user->getPassword() == hashPassword(password)) {
             user->loggedIn = true;
-            return "valid_login";
-        } else {
-            return "invalid_pass";
+            return true;
         }
     }
 
-    return "invalid_user";
+    return false;
 }
 
-string favoritePlanet(const string& username, const string& planetName){
+string favoritePlanet(User*& currentUser, const vector<Planet*>& planets, const string& username, const string& planetName){
+    string name;
+    ifstream inFile("../users/favorites/" + username + ".txt");
+
+    while (getline(inFile, name)) {
+        if (name == planetName)
+            return "Planet has already been added!";
+    }
+    inFile.clear();
+    inFile.seekg(0);
+
+    string line;
+    int counter = 0;
+    while (getline(inFile, line)) {
+        ++counter;
+    }
+    inFile.close();
+
     // favorites the planet based on input from user
     ofstream file("../users/favorites/" + username + ".txt", std::ios::app);
 
@@ -454,10 +474,20 @@ string favoritePlanet(const string& username, const string& planetName){
         throw runtime_error("Could not open file.");
     }
 
-    file << planetName << "\n";
+    if (counter >= 5) {
+        file.close();
+        return "Your favorites are full!";
+    }
+    else
+        file << planetName << "\n";
+
     file.close();
 
-    return "valid_favorite";
+    if (currentUser != nullptr) {
+        int index = binarySearch(planets, "alphabetical", planetName);
+        currentUser->favorites.push_back(planets[index]);
+    }
+    return  planetName + " has been added to your favorites!";
 }
 
 string unfavoritePlanet(vector<User*> users, const string& username, const string& planetName){
@@ -468,6 +498,7 @@ string unfavoritePlanet(vector<User*> users, const string& username, const strin
             if (user->favorites[i]->getName() == planetName) {
                 user->favorites.erase(user->favorites.begin() + i);
                 i--;
+                break;
             }
         }
     }
@@ -500,7 +531,7 @@ string unfavoritePlanet(vector<User*> users, const string& username, const strin
     }
     write_file.close();
 
-    return "successful_unfavorite";
+    return "Successfully removed " + planetName;
 }
 
 string loadFavorites(vector<User*>& users, vector<Planet*>& planets, const string& username){
@@ -509,7 +540,7 @@ string loadFavorites(vector<User*>& users, vector<Planet*>& planets, const strin
     vector<string> favorites;
 
     if(!file.is_open()){
-        return "no_favorites";
+        return "You don't have any favorites saved.";
     }
 
     string line;
@@ -517,21 +548,39 @@ string loadFavorites(vector<User*>& users, vector<Planet*>& planets, const strin
         favorites.push_back(line);
     }
 
-    findFavorites(users, planets, favorites);
+    User* currentUser = nullptr;
+    for (User* user : users) {
+        if (user->getUsername() == username) {
+            currentUser = user;
+            break;
+        }
+    }
+    findFavorites(currentUser, planets, favorites);
 
-    return "favorites_loaded";
+    return "Successfully loaded favorites!";
 }
 
-void findFavorites(vector<User*>& users, vector<Planet*>& planets, vector<string>& favorites){
+void findFavorites(User*& currentUser, vector<Planet*>& planets, vector<string>& favorites){
     // finds the favorites based on name from the user's file
     Sort(planets, "alphabetical");
     for (const string& favName : favorites) {
-        if (!users.empty()) {
+        if (currentUser != nullptr) {
             int index = binarySearch(planets, "alphabetical", favName);
-            users[0]->favorites.push_back(planets[index]);
+            currentUser->favorites.push_back(planets[index]);
         }
     }
 }
+
+//void findFavorites(vector<User*>& users, vector<Planet*>& planets, vector<string>& favorites){
+//    // finds the favorites based on name from the user's file
+//    Sort(planets, "alphabetical");
+//    for (const string& favName : favorites) {
+//        if (!users.empty()) {
+//            int index = binarySearch(planets, "alphabetical", favName);
+//            users[0]->favorites.push_back(planets[index]);
+//        }
+//    }
+//}
 
 void clearFile(){
     // for testing purposes

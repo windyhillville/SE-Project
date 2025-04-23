@@ -9,9 +9,9 @@ add_definitions(-DASIO_STANDALONE)
 
 add_subdirectory(external/Crow)
 
-add_executable(Elysium src/main.cpp src/Planet.cpp src/DataProcessing.cpp)
+add_executable(server src/main.cpp src/Planet.cpp src/DataProcessing.cpp)
 
-target_link_libraries(Elysium
+target_link_libraries(server
         PUBLIC
         Crow
 )
