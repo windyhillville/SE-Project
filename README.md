@@ -1,1 +1,114 @@
-# SE-Project
+# Elysium
+Discover random exoplanets, compare them to Earth, favorite your finds and explore future climate scenarios!
+# Installation Instructions
+Elysium uses a singular framework for implementing and connecting our backend to our frontend, while using a broad range of libraries for graphics processing. Therefore, we have provided instructions for installing each tool, whether you’re using Windows or MacOS.
+
+# Crow (C++ Framework)
+
+**MacOS**
+
+Go to Elysium’s project directory, create a folder titled “external”, go there, and type the following prompt on the terminal.
+
+_git clone https://github.com/CrowCpp/Crow_
+
+Once you have successfully cloned the repo to your local system, type the following prompt on the terminal.
+brew install asio
+
+**Windows**
+
+Go to Elysium’s project directory, create a folder titled “external”, go there, and type the following prompt on the Command Prompt.
+
+_git clone https://github.com/CrowCpp/Crow_
+
+Download Visual Studio Build Tools using the link below or have Visual Studio installed with the C++ environment tools.
+
+_https://visualstudio.microsoft.com/visual-cpp-build-tools/_
+
+Clone a C++ package manager called vcpkg by typing in the following prompt:
+
+_git clone https://github.com/microsoft/vcpkg.git_
+
+Go to the directory where you cloned the repo and then use Command Prompt to run these commands in the directory that you choose. (It is easier to put this in the /external folder)
+
+_cd vcpkg_
+
+_.\bootstrap-vcpkg.bat_
+
+Install ASIO in that directory by using the following prompt:
+
+_.\vcpkg install asio_
+
+Copy this into your CMakeLists.txt:
+
+_cmake_minimum_required(VERSION 3.10)_
+
+_set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}external/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")_
+_project(SE-Project)_
+
+_set(CMAKE_CXX_STANDARD 17)_
+
+_add_definitions(-DASIO_STANDALONE)_
+
+_add_subdirectory(external/Crow)_
+
+_add_executable(Elysium src/main.cpp src/Planet.cpp src/DataProcessing.cpp)_
+_target_link_libraries(Elysium PUBLIC Crow ws2_32 mswsock)_
+
+_add_executable(run_tests tests/tests.cpp src/Planet.cpp src/DataProcessing.cpp)_
+_target_link_libraries(run_tests PUBLIC Crow ws2_32 mswsock)_
+
+If Clion is not able to find the file, you can do an absolute path to that file.
+
+In Clion, go to → Settings → Build, Execution, Deployment → Cmake
+
+In cmake options, put this in the field there and click apply.
+
+_-DCMAKE_TOOLCHAIN_FILE=/external/vcpkg/scripts/buildsystems/vcpkg.cmake_
+
+It will take a few moments for Clion to apply these changes.
+
+If it does not find the file, you can use an absolute path to that directory.
+
+# Processing
+
+**MacOS**
+
+Install Processing using the link below:
+
+_https://processing.org/tutorials/gettingstarted_
+
+Per the website, “Processing comes as a .dmg disk image. Open the file from your Downloads folder, then drag the Processing icon to your Applications folder.”
+
+For the libraries, in Processing’s menu bar:
+
+→ Sketch → Import Library → Manage Libraries, and then search for and install Peasy Cam, HTTP Requests for Processing, and ControlP5.
+
+**Windows**
+
+Install Processing using the link below:
+
+_https://processing.org/tutorials/gettingstarted_
+
+Per the website, “Processing comes as a .msi installer file. Locate the file in your Downloads folder and double-click it to install Processing.”
+
+Choose a typical install in the installer wizard. That has all the features that are required to run this program.
+
+Once it finishes installing Processing, it is normally located in your Program Files on your C drive.
+
+Once you find the folder, open up the folder and double click “Processing.exe” to open the program.
+
+For the libraries, in Processing’s menu bar:
+
+→ Sketch → Import Library → Manage Libraries and then search for Peasy Cam, HTTP Requests for Processing, and ControlP5
+
+# Running the Application
+
+**MacOs**
+
+Doubleclick the "run_mac.app" file and the program will open up.
+
+**__Windows__**
+
+Doubleclick the “run_windows.bat” file and the program will open up.
+
+
