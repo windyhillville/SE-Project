@@ -28,10 +28,10 @@ int main () {
     vector<Planet*> planets;
     vector<User*> users;
     // loads all users from file
-//    loadUsers(users, "accounts.txt");
-//    // placeholder csv file until we get the entire dataset
-//    inputParser(planets, "ExoPlanets.csv");
-//    // call to create the user interface will go here
+    loadUsers(users, "accounts.txt");
+    // placeholder csv file until we get the entire dataset
+    inputParser(planets, "ExoPlanets.csv");
+    // call to create the user interface will go here
 
     string currentUsername = "";
     User* currentUser = nullptr;
@@ -237,7 +237,7 @@ int main () {
                 return crow::response(favoritesJSON);
             });
 
-    CROW_ROUTE(app, "/shutDown").methods("POST"_method)
+    CROW_ROUTE(app, "/resetUser").methods("POST"_method)
             ([&currentUser, &users, &planets]() {
                 currentUser->favorites.clear();
 //                for (auto & user : users) {
