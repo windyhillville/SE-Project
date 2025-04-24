@@ -1,0 +1,15 @@
+# ninja log v5
+8	421	1745272467164109854	CMakeFiles/run_tests.dir/src/Planet.cpp.o	c438f4bfbf11913a
+32	1003	1745442891329514324	CMakeFiles/server.dir/src/DataProcessing.cpp.o	bf55d31cf11e8a1b
+8	724	1745272467460002732	CMakeFiles/run_tests.dir/src/DataProcessing.cpp.o	4348664bbe2abd80
+6	2716	1745272469449020153	CMakeFiles/run_tests.dir/tests/tests.cpp.o	68dfd4ce7e7b6250
+3	15	0	clean	ad90e366ad70d77b
+21	3124	1745448104950016162	CMakeFiles/server.dir/src/main.cpp.o	c8fd73eb7b987cf4
+12	703	1745362071596867084	CMakeFiles/server.dir/src/Planet.cpp.o	29efc49345b27f20
+2716	2906	1745272469647316276	run_tests	e64d222fc22b54bc
+3132	3262	1745448105102571886	server	b4c0323a46a9686
+2929	3040	1745272510482342640	Elysium	e6f9d1a0d865e206
+5	379	1745452880783098480	CMakeFiles/server.dir/src/Planet.cpp.o	4d9108d550590e4a
+6	737	1745452881139397655	CMakeFiles/server.dir/src/DataProcessing.cpp.o	f490bfad1c7d8503
+5	3100	1745452883494722222	CMakeFiles/server.dir/src/main.cpp.o	3c5f001b3fb4bc3d
+3100	3219	1745452883623358885	server	b4c0323a46a9686
