@@ -342,7 +342,7 @@ vector<Planet*> searchNearest(vector<Planet*>& planets, const string& searchBy, 
             throw invalid_argument("Mismatch: input for this search parameter must be a float.");
         }
     }
-    else if (searchBy == "alphabetical" or searchBy == "type") {
+    else if (searchBy == "alphabetical" || searchBy == "type") {
         string target = target_;
         // sort planets by appropriate parameter
         Sort(planets, searchBy);
