@@ -7,18 +7,10 @@ Elysium uses a singular framework for implementing and connecting our backend to
 
 **MacOS**
 
-Go to Elysium’s project directory, create a folder titled “external”, go there, and type the following prompt on the terminal.
-
-_git clone https://github.com/CrowCpp/Crow_
-
-Once you have successfully cloned the repo to your local system, type the following prompt on the terminal.
+type the following prompt on the terminal.
 brew install asio
 
 **Windows**
-
-Go to Elysium’s project directory, create a folder titled “external”, go there, and type the following prompt on the Command Prompt.
-
-_git clone https://github.com/CrowCpp/Crow_
 
 Download Visual Studio Build Tools using the link below or have Visual Studio installed with the C++ environment tools.
 
@@ -63,7 +55,7 @@ In Clion, go to → Settings → Build, Execution, Deployment → Cmake
 
 In cmake options, put this in the field there and click apply.
 
-_-DCMAKE_TOOLCHAIN_FILE=/external/vcpkg/scripts/buildsystems/vcpkg.cmake_
+_-DCMAKE_TOOLCHAIN_FILE=external/vcpkg/scripts/buildsystems/vcpkg.cmake_
 
 It will take a few moments for Clion to apply these changes.
 
@@ -105,10 +97,30 @@ For the libraries, in Processing’s menu bar:
 
 **MacOs**
 
-Doubleclick the "run_mac.app" file and the program will open up.
+In Terminal, go to the project directory and then go to the cmake-build-debug folder.
+
+Once in the correct directory, type the following command and the server will start running:
+
+./server
+
+Open the main sketch in Processing titled CEN3031.pde
+
+Now, run the Processing application.
+
+Once you’re finished and exited out of the program, close out of the server by entering the following command prompt:
+Ctrl + c
 
 **__Windows__**
 
-Doubleclick the “run_windows.bat” file and the program will open up.
+Doubleclick the “run_windows.bat” and that will open up the Crow server backend.
+
+Open the main sketch in Processing titled CEN3031.pde, it is located in → frontend → SystemUI  directory.
+
+Now, run the Processing application.
+
+Once you’re finished and exited out of the program, close out of the server by entering the following command prompt:
+
+Ctrl + c 
+
 
 
