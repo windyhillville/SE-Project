@@ -7,7 +7,8 @@ Elysium uses a singular framework for implementing and connecting our backend to
 
 **MacOS**
 
-type the following prompt on the terminal.
+Type the following prompt on the terminal.
+
 brew install asio
 
 In your CMakeLists.txt, comment out the lines specified in the file.
