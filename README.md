@@ -3,12 +3,14 @@ Discover random exoplanets, compare them to Earth, favorite your finds and explo
 # Installation Instructions
 Elysium uses a singular framework for implementing and connecting our backend to our frontend, while using a broad range of libraries for graphics processing. Therefore, we have provided instructions for installing each tool, whether you’re using Windows or MacOS.
 
-# Crow (C++ Framework)
+# Crow (C++ Framework) Dependencies
 
 **MacOS**
 
 type the following prompt on the terminal.
 brew install asio
+
+In your CMakeLists.txt, comment out the lines specified in the file.
 
 **Windows**
 
@@ -29,27 +31,6 @@ _.\bootstrap-vcpkg.bat_
 Install ASIO in that directory by using the following prompt:
 
 _.\vcpkg install asio_
-
-Copy this into your CMakeLists.txt:
-
-_cmake_minimum_required(VERSION 3.10)_
-
-_set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}external/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")_
-_project(SE-Project)_
-
-_set(CMAKE_CXX_STANDARD 17)_
-
-_add_definitions(-DASIO_STANDALONE)_
-
-_add_subdirectory(external/Crow)_
-
-_add_executable(Elysium src/main.cpp src/Planet.cpp src/DataProcessing.cpp)_
-_target_link_libraries(Elysium PUBLIC Crow ws2_32 mswsock)_
-
-_add_executable(run_tests tests/tests.cpp src/Planet.cpp src/DataProcessing.cpp)_
-_target_link_libraries(run_tests PUBLIC Crow ws2_32 mswsock)_
-
-If Clion is not able to find the file, you can do an absolute path to that file.
 
 In Clion, go to → Settings → Build, Execution, Deployment → Cmake
 
@@ -103,7 +84,7 @@ Once in the correct directory, type the following command and the server will st
 
 ./server
 
-Open the main sketch in Processing titled CEN3031.pde
+Open the main sketch in Processing titled CEN3031.pde it is located in → frontend → SystemUI  directory.
 
 Now, run the Processing application.
 
